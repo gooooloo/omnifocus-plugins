@@ -1,0 +1,34 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "qidu",
+    "identifier": "com.qidu.defer-tomorrow-6am",
+    "version": "1.0",
+    "description": "将选中任务的 defer date 设为明天早上 06:00",
+    "label": "4-明早6点",
+    "shortLabel": "明早6点",
+    "paletteLabel": "明早6点",
+    "image": "sunrise"
+}*/
+(() => {
+    const action = new PlugIn.Action(function (selection) {
+        const cal = Calendar.current;
+        const now = new Date();
+        const startOfDay = cal.startOfDay(now);
+        const dc = new DateComponents();
+        dc.day = 1;
+        dc.hour = 6;
+        const deferDate = cal.dateByAddingDateComponents(startOfDay, dc);
+        selection.databaseObjects.forEach(item => {
+            if (item instanceof Task || item instanceof Project) {
+                item.deferDate = deferDate;
+            }
+        });
+    });
+
+    action.validate = function (selection) {
+        return selection.tasks.length > 0 || selection.projects.length > 0;
+    };
+
+    return action;
+})();

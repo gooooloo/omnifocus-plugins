@@ -1,0 +1,33 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "qidu",
+    "identifier": "com.qidu.defer-tonight-6pm",
+    "version": "1.0",
+    "description": "将选中任务的 defer date 设为今晚 18:00",
+    "label": "3-今晚6点",
+    "shortLabel": "今晚6点",
+    "paletteLabel": "今晚6点",
+    "image": "moon.stars"
+}*/
+(() => {
+    const action = new PlugIn.Action(function (selection) {
+        const cal = Calendar.current;
+        const now = new Date();
+        const startOfDay = cal.startOfDay(now);
+        const dc = new DateComponents();
+        dc.hour = 18;
+        const deferDate = cal.dateByAddingDateComponents(startOfDay, dc);
+        selection.databaseObjects.forEach(item => {
+            if (item instanceof Task || item instanceof Project) {
+                item.deferDate = deferDate;
+            }
+        });
+    });
+
+    action.validate = function (selection) {
+        return selection.tasks.length > 0 || selection.projects.length > 0;
+    };
+
+    return action;
+})();

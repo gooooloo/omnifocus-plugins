@@ -1,0 +1,28 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "qidu",
+    "identifier": "com.qidu.defer-1hour",
+    "version": "1.0",
+    "description": "将选中任务的 defer date 延迟 1 小时",
+    "label": "2-1小时后再说",
+    "shortLabel": "1小时后",
+    "paletteLabel": "1小时后",
+    "image": "clock"
+}*/
+(() => {
+    const action = new PlugIn.Action(function (selection) {
+        const deferDate = new Date(new Date().getTime() + 60 * 60 * 1000);
+        selection.databaseObjects.forEach(item => {
+            if (item instanceof Task || item instanceof Project) {
+                item.deferDate = deferDate;
+            }
+        });
+    });
+
+    action.validate = function (selection) {
+        return selection.tasks.length > 0 || selection.projects.length > 0;
+    };
+
+    return action;
+})();

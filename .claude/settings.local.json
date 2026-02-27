@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.omni-automation.com)",
+      "WebFetch(domain:discourse.omnigroup.com)",
+      "WebFetch(domain:omni-automation.com)",
+      "Bash(git add:*)"
+    ]
+  }
+}

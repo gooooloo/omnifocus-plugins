@@ -1,0 +1,28 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "qidu",
+    "identifier": "com.qidu.defer-5min",
+    "version": "1.0",
+    "description": "将选中任务的 defer date 延迟 5 分钟",
+    "label": "1-暂时不想做（5分钟后）",
+    "shortLabel": "5分钟后",
+    "paletteLabel": "5分钟后",
+    "image": "5.circle"
+}*/
+(() => {
+    const action = new PlugIn.Action(function (selection) {
+        const deferDate = new Date(new Date().getTime() + 5 * 60 * 1000);
+        selection.databaseObjects.forEach(item => {
+            if (item instanceof Task || item instanceof Project) {
+                item.deferDate = deferDate;
+            }
+        });
+    });
+
+    action.validate = function (selection) {
+        return selection.tasks.length > 0 || selection.projects.length > 0;
+    };
+
+    return action;
+})();

@@ -1,0 +1,28 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "qidu",
+    "identifier": "com.qidu.defer-1week",
+    "version": "1.0",
+    "description": "将选中任务的 defer date 延迟 1 周",
+    "label": "5-下周再说",
+    "shortLabel": "下周再说",
+    "paletteLabel": "下周再说",
+    "image": "calendar"
+}*/
+(() => {
+    const action = new PlugIn.Action(function (selection) {
+        const deferDate = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+        selection.databaseObjects.forEach(item => {
+            if (item instanceof Task || item instanceof Project) {
+                item.deferDate = deferDate;
+            }
+        });
+    });
+
+    action.validate = function (selection) {
+        return selection.tasks.length > 0 || selection.projects.length > 0;
+    };
+
+    return action;
+})();
